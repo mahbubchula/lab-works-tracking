@@ -70,6 +70,14 @@ def ensure_session_defaults() -> None:
         st.session_state["goal_due_date"] = date.today()
 
 
+def rerun() -> None:
+    """Streamlit renamed experimental_rerun to rerun; support both."""
+    if hasattr(st, "rerun"):
+        st.rerun()
+    elif hasattr(st, "experimental_rerun"):
+        st.experimental_rerun()
+
+
 def logout() -> None:
     for key in [
         "user",
@@ -79,7 +87,7 @@ def logout() -> None:
         "goal_due_date",
     ]:
         st.session_state.pop(key, None)
-    st.experimental_rerun()
+    rerun()
 
 
 def login_register_panel() -> None:
@@ -98,7 +106,7 @@ def login_register_panel() -> None:
                 if user and verify_password(password, user["password_hash"]):
                     st.session_state["user"] = user
                     st.success("Welcome back! Redirecting...")
-                    st.experimental_rerun()
+                    rerun()
                 else:
                     st.error("Invalid credentials")
 
@@ -195,7 +203,7 @@ def render_goal_creator(user: Dict[str, Any]) -> None:
         st.session_state["goal_description"] = ""
         st.session_state["goal_visibility"] = "public"
         st.session_state["goal_due_date"] = date.today()
-        st.experimental_rerun()
+        rerun()
 
 
 def render_personal_goals(user: Dict[str, Any]) -> None:
@@ -224,7 +232,7 @@ def render_personal_goals(user: Dict[str, Any]) -> None:
             if st.button("Apply status", key=f"status_btn_{goal['id']}"):
                 update_goal_status(goal["id"], new_status)
                 st.success("Status updated")
-                st.experimental_rerun()
+                rerun()
 
             render_activity_form(goal, user)
             st.markdown("**Recent log entries**")
@@ -289,7 +297,7 @@ def render_activity_form(goal: Dict[str, Any], user: Dict[str, Any]) -> None:
                 st.session_state[key] = ""
                 st.session_state[ai_flag_key] = False
                 st.success("Update stored")
-                st.experimental_rerun()
+                rerun()
 
 
 def render_team_feed(user: Dict[str, Any]) -> None:
