@@ -91,7 +91,7 @@ def logout() -> None:
 
 
 def login_register_panel() -> None:
-    st.title("?? Lab Works Tracking Hub")
+    st.title("Lab Works Tracking Hub")
     st.caption("Set goals, log activities, and let everyone stay aligned.")
 
     login_tab, register_tab = st.tabs(["Sign in", "Create account"])
@@ -136,7 +136,7 @@ def login_register_panel() -> None:
 
 
 def render_workspace(user: Dict[str, Any]) -> None:
-    st.title("?? Team workspace")
+    st.title("Team workspace")
     st.write(
         f"Logged in as **{user['name']}** — {user['role'].title()} | "
         "Use the tabs below to manage your workflow."
