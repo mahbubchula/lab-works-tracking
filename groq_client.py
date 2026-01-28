@@ -6,7 +6,7 @@ from typing import Optional, Tuple
 import requests
 
 API_URL = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
-DEFAULT_MODEL = os.getenv("GROQ_MODEL", "llama3-8b-8192")
+DEFAULT_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 DEFAULT_SYSTEM_PROMPT = (
     "You are a concise writing partner that helps researchers document lab work. "
     "Clean up the text, keep it factual, and highlight measurable outcomes."

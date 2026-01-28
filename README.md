@@ -36,7 +36,7 @@ lab works tracking/
    Copy `.streamlit/secrets.example.toml` to `.streamlit/secrets.toml` (or set environment variables) and place your rotated key:
    ```toml
    GROQ_API_KEY = "gsk_your_new_key"
-   GROQ_MODEL = "llama3-8b-8192"  # optional override
+   GROQ_MODEL = "llama-3.1-8b-instant"  # optional override
    ```
 4. **Run the app.**
    ```bash
@@ -50,7 +50,7 @@ lab works tracking/
 3. In the *Advanced settings → Secrets* panel, add:
    ```toml
    GROQ_API_KEY="gsk_your_rotated_key"
-   GROQ_MODEL="llama3-8b-8192"
+   GROQ_MODEL="llama-3.1-8b-instant"
    ```
 4. Streamlit Cloud automatically installs `requirements.txt` and launches the app.
 
