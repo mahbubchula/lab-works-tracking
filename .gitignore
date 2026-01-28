@@ -1,0 +1,9 @@
+﻿__pycache__/
+*.pyc
+.venv/
+.env
+labworks.db
+*.db
+.streamlit/secrets.toml
+.streamlit/state.json
+
