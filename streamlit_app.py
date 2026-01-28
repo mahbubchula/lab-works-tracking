@@ -68,6 +68,7 @@ def ensure_session_defaults() -> None:
     st.session_state.setdefault("goal_visibility", "public")
     if "goal_due_date" not in st.session_state:
         st.session_state["goal_due_date"] = date.today()
+    st.session_state.setdefault("reset_goal_form", False)
 
 
 def rerun() -> None:
@@ -154,6 +155,11 @@ def render_workspace(user: Dict[str, Any]) -> None:
 
 def render_goal_creator(user: Dict[str, Any]) -> None:
     st.subheader("Create a new goal or experiment milestone")
+    if st.session_state.pop("reset_goal_form", False):
+        st.session_state["goal_title"] = ""
+        st.session_state["goal_description"] = ""
+        st.session_state["goal_visibility"] = "public"
+        st.session_state["goal_due_date"] = date.today()
     col1, col2 = st.columns([3, 1])
     with col1:
         st.session_state.setdefault("goal_title", "")
@@ -199,10 +205,7 @@ def render_goal_creator(user: Dict[str, Any]) -> None:
             visibility=visibility,
         )
         st.success("Goal saved! Scroll below to track it.")
-        st.session_state["goal_title"] = ""
-        st.session_state["goal_description"] = ""
-        st.session_state["goal_visibility"] = "public"
-        st.session_state["goal_due_date"] = date.today()
+        st.session_state["reset_goal_form"] = True
         rerun()
 
 
@@ -254,15 +257,21 @@ def render_activity_form(goal: Dict[str, Any], user: Dict[str, Any]) -> None:
     st.markdown("### Log lab activity")
     key = f"activity_text_{goal['id']}"
     ai_flag_key = f"activity_ai_{goal['id']}"
+    slider_key = f"progress_{goal['id']}"
+    reset_flag = f"reset_activity_{goal['id']}"
+    if st.session_state.pop(reset_flag, False):
+        st.session_state[key] = ""
+        st.session_state[ai_flag_key] = False
+        st.session_state[slider_key] = 25
     st.session_state.setdefault(key, "")
     st.session_state.setdefault(ai_flag_key, False)
+    st.session_state.setdefault(slider_key, 25)
     text = st.text_area(
         "Reflection / actions",
         key=key,
         placeholder="Document experiments, blockers, or next steps.",
         height=120,
     )
-    slider_key = f"progress_{goal['id']}"
     progress_value = st.slider("Completion %", 0, 100, 25, key=slider_key)
     cols = st.columns(2)
     with cols[0]:
@@ -294,8 +303,7 @@ def render_activity_form(goal: Dict[str, Any], user: Dict[str, Any]) -> None:
                     progress=progress_value,
                     ai_generated=st.session_state[ai_flag_key],
                 )
-                st.session_state[key] = ""
-                st.session_state[ai_flag_key] = False
+                st.session_state[reset_flag] = True
                 st.success("Update stored")
                 rerun()
 
